@@ -1,11 +1,1436 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Сбербанк Онлайн</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a5f23 0%, #0a3c14 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 400px;
+            height: 700px;
+            background-color: #fff;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Заголовок приложения */
+        .app-header {
+            background: linear-gradient(to right, #0a3c14, #1a5f23);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .app-header .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 5px;
+        }
+
+        .app-header .logo i {
+            font-size: 28px;
+            margin-right: 10px;
+        }
+
+        .app-header h1 {
+            font-weight: 700;
+            font-size: 22px;
+            letter-spacing: 0.5px;
+        }
+
+        .app-header .time {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Экран регистрации */
+        .screen {
+            display: none;
+            height: calc(100% - 100px);
+            padding: 20px;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        .welcome-message {
+            text-align: center;
+            margin-top: 20px;
+            color: #1a5f23;
+        }
+
+        .welcome-message h2 {
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+
+        .welcome-message p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .input-container {
+            margin: 30px 0;
+        }
+
+        .input-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .input-container input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .input-container input:focus {
+            border-color: #1a5f23;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 95, 35, 0.1);
+        }
+
+        .input-container input.error {
+            border-color: #ff4444;
+            background-color: rgba(255, 68, 68, 0.05);
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .button {
+            background: linear-gradient(to right, #1a5f23, #0a3c14);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            display: block;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(26, 95, 35, 0.2);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 95, 35, 0.3);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .button-secondary {
+            background: #f0f0f0;
+            color: #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .button-secondary:hover {
+            background: #e5e5e5;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Главный экран */
+        .user-info {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(to right, #1a5f23, #0a3c14);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+
+        .user-details h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .user-details p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Баланс */
+        .balance-container {
+            background: linear-gradient(135deg, #1a5f23, #0a3c14);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(26, 95, 35, 0.2);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .balance-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .balance-container h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .balance-amount {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* Меню быстрых действий */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-btn {
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            padding: 15px 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-3px);
+        }
+
+        .action-btn i {
+            font-size: 24px;
+            color: #1a5f23;
+            margin-bottom: 8px;
+        }
+
+        .action-btn span {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* История операций */
+        .history-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .history-title h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .history-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 250px;
+            padding-right: 5px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            animation: fadeInItem 0.5s ease-out;
+        }
+
+        @keyframes fadeInItem {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-info {
+            flex-grow: 1;
+        }
+
+        .transaction-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .transaction-date, .transaction-comment {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .transaction-amount {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .positive {
+            color: #1a5f23;
+        }
+
+        .negative {
+            color: #d32f2f;
+        }
+
+        /* Экран перевода */
+        .transfer-form {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transfer-form .input-container {
+            margin-bottom: 20px;
+        }
+
+        /* Админ-панель */
+        .admin-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 30px 20px;
+            display: none;
+            flex-direction: column;
+            z-index: 100;
+            animation: fadeInAdmin 0.5s ease-out;
+        }
+
+        @keyframes fadeInAdmin {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .admin-panel.active {
+            display: flex;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .admin-header h2 {
+            font-size: 24px;
+            color: #4CAF50;
+        }
+
+        .close-admin {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .admin-form {
+            flex-grow: 1;
+        }
+
+        /* Нижнее меню */
+        .bottom-menu {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+            background-color: #fff;
+        }
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .menu-item.active {
+            color: #1a5f23;
+        }
+
+        .menu-item i {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .menu-item span {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Анимации и дополнительные стили */
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(26, 95, 35, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(26, 95, 35, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(26, 95, 35, 0); }
+        }
+
+        .notification {
+            position: absolute;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 200;
+            display: none;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translate(-50%, -20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        .notification.error {
+            background-color: #f44336;
+        }
+
+        .notification.warning {
+            background-color: #ff9800;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1a5f23;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="app-container">
+        <!-- Заголовок приложения -->
+        <div class="app-header">
+            <div class="time" id="current-time">12:30</div>
+            <div class="logo">
+                <i class="fas fa-university"></i>
+                <h1>СберБанк</h1>
+            </div>
+        </div>
+
+        <!-- Уведомление -->
+        <div class="notification" id="notification">Перевод выполнен успешно!</div>
+
+        <!-- Экран регистрации -->
+        <div class="screen active" id="register-screen">
+            <div>
+                <div class="welcome-message">
+                    <h2>Добро пожаловать!</h2>
+                    <p>Введите ваше имя для создания счёта в СберБанке</p>
+                </div>
+                
+                <div class="input-container">
+                    <label for="user-name">Ваше имя</label>
+                    <input type="text" id="user-name" placeholder="Иван Иванов" maxlength="30">
+                    <div class="error-message" id="name-error">Введите ваше имя</div>
+                </div>
+            </div>
+            
+            <button class="button" id="register-btn">Создать счёт</button>
+        </div>
+
+        <!-- Главный экран -->
+        <div class="screen" id="main-screen">
+            <div>
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">И</div>
+                    <div class="user-details">
+                        <h3 id="display-name">Иван Иванов</h3>
+                        <p id="account-number">Счёт: •••• 1234</p>
+                    </div>
+                </div>
+                
+                <div class="balance-container" id="balance-container">
+                    <h3>Баланс счёта</h3>
+                    <div class="balance-amount" id="balance">0 ₽</div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="action-btn" id="transfer-btn">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Перевести</span>
+                    </div>
+                    <div class="action-btn">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Оплатить</span>
+                    </div>
+                    <div class="action-btn">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Карты</span>
+                    </div>
+                    <div class="action-btn">
+                        <i class="fas fa-history"></i>
+                        <span>История</span>
+                    </div>
+                </div>
+                
+                <div class="history-title">
+                    <h3>Последние операции</h3>
+                    <span id="history-count">0 операций</span>
+                </div>
+                
+                <div class="history-list" id="history-list">
+                    <!-- История операций будет добавляться сюда -->
+                    <div class="history-item">
+                        <div class="transaction-info">
+                            <div class="transaction-name">Открытие счёта</div>
+                            <div class="transaction-date" id="account-date"></div>
+                        </div>
+                        <div class="transaction-amount positive">0 ₽</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bottom-menu">
+                <div class="menu-item active" id="menu-main">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </div>
+                <div class="menu-item" id="menu-transfer">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Переводы</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Платежи</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-user"></i>
+                    <span>Профиль</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экран перевода -->
+        <div class="screen" id="transfer-screen">
+            <div>
+                <div class="user-info">
+                    <div class="user-avatar" style="background: linear-gradient(to right, #d32f2f, #b71c1c);">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3>Перевод денег</h3>
+                        <p>На счёт другого клиента</p>
+                    </div>
+                </div>
+                
+                <div class="transfer-form">
+                    <div class="input-container">
+                        <label for="recipient-account">Номер счёта получателя (только цифры)</label>
+                        <input type="text" id="recipient-account" placeholder="Введите номер счёта (только цифры)" maxlength="30">
+                        <div class="error-message" id="account-error">Номер счёта должен содержать только цифры</div>
+                    </div>
+                    
+                    <div class="input-container">
+                        <label for="transfer-amount">Сумма перевода (₽)</label>
+                        <input type="number" id="transfer-amount" placeholder="0" min="1">
+                        <div class="error-message" id="amount-error">Введите сумму перевода</div>
+                    </div>
+                    
+                    <div class="input-container">
+                        <label for="transfer-comment">Комментарий к переводу (необязательно)</label>
+                        <input type="text" id="transfer-comment" placeholder="Например: за услуги">
+                    </div>
+                    
+                    <div class="balance-check">
+                        <div class="balance-info">
+                            <span>Доступно: </span>
+                            <span id="available-balance">0 ₽</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <button class="button" id="send-transfer-btn">Перевести деньги</button>
+                <button class="button button-secondary" id="back-to-main-btn">Назад</button>
+            </div>
+        </div>
+
+        <!-- Админ-панель -->
+        <div class="admin-panel" id="admin-panel">
+            <div class="admin-header">
+                <h2><i class="fas fa-cog"></i> Админ-панель</h2>
+                <button class="close-admin" id="close-admin-btn">&times;</button>
+            </div>
+            
+            <div class="admin-form">
+                <div class="input-container">
+                    <label for="admin-amount">Сумма для пополнения (₽)</label>
+                    <input type="number" id="admin-amount" placeholder="1000" min="1" value="1000">
+                    <div class="error-message" id="admin-amount-error">Введите сумму пополнения</div>
+                </div>
+                
+                <div class="input-container">
+                    <label for="admin-sender">От кого пополнение</label>
+                    <input type="text" id="admin-sender" placeholder="Например: СберБанк" value="СберБанк">
+                    <div class="error-message" id="admin-sender-error">Введите отправителя</div>
+                </div>
+                
+                <div class="input-container">
+                    <label for="admin-comment">Комментарий к пополнению</label>
+                    <input type="text" id="admin-comment" placeholder="Например: Бонус за использование" value="Пополнение счёта">
+                </div>
+            </div>
+            
+            <button class="button" id="add-funds-btn">Пополнить баланс</button>
+        </div>
+    </div>
+
+    <script>
+        // Элементы DOM
+        const registerScreen = document.getElementById('register-screen');
+        const mainScreen = document.getElementById('main-screen');
+        const transferScreen = document.getElementById('transfer-screen');
+        const adminPanel = document.getElementById('admin-panel');
+        const notification = document.getElementById('notification');
+        
+        // Кнопки и поля
+        const registerBtn = document.getElementById('register-btn');
+        const userNameInput = document.getElementById('user-name');
+        const nameError = document.getElementById('name-error');
+        const displayName = document.getElementById('display-name');
+        const userAvatar = document.getElementById('user-avatar');
+        const accountNumber = document.getElementById('account-number');
+        const balanceElement = document.getElementById('balance');
+        const balanceContainer = document.getElementById('balance-container');
+        const transferBtn = document.getElementById('transfer-btn');
+        const menuMain = document.getElementById('menu-main');
+        const menuTransfer = document.getElementById('menu-transfer');
+        const backToMainBtn = document.getElementById('back-to-main-btn');
+        const sendTransferBtn = document.getElementById('send-transfer-btn');
+        const closeAdminBtn = document.getElementById('close-admin-btn');
+        const addFundsBtn = document.getElementById('add-funds-btn');
+        const historyList = document.getElementById('history-list');
+        const historyCount = document.getElementById('history-count');
+        const accountDate = document.getElementById('account-date');
+        const availableBalance = document.getElementById('available-balance');
+        
+        // Поля ввода для переводов
+        const recipientAccountInput = document.getElementById('recipient-account');
+        const transferAmountInput = document.getElementById('transfer-amount');
+        const transferCommentInput = document.getElementById('transfer-comment');
+        const accountError = document.getElementById('account-error');
+        const amountError = document.getElementById('amount-error');
+        
+        // Поля ввода для админ-панели
+        const adminAmountInput = document.getElementById('admin-amount');
+        const adminSenderInput = document.getElementById('admin-sender');
+        const adminCommentInput = document.getElementById('admin-comment');
+        const adminAmountError = document.getElementById('admin-amount-error');
+        const adminSenderError = document.getElementById('admin-sender-error');
+        
+        // Данные приложения
+        let userData = {
+            name: '',
+            account: '',
+            balance: 0,
+            accountCreated: '',
+            transactions: []
+        };
+        
+        let clickCount = 0;
+        let lastClickTime = 0;
+        
+        // Инициализация приложения при загрузке
+        function initApp() {
+            // Установка текущего времени
+            updateTime();
+            setInterval(updateTime, 60000);
+            
+            // Проверка сохраненных данных
+            loadUserData();
+            
+            // Обработчики событий
+            setupEventListeners();
+            
+            // Обновляем доступный баланс на экране перевода
+            updateAvailableBalance();
+        }
+        
+        // Настройка всех обработчиков событий
+        function setupEventListeners() {
+            registerBtn.addEventListener('click', registerUser);
+            transferBtn.addEventListener('click', showTransferScreen);
+            menuMain.addEventListener('click', () => showScreen(mainScreen));
+            menuTransfer.addEventListener('click', showTransferScreen);
+            backToMainBtn.addEventListener('click', () => showScreen(mainScreen));
+            sendTransferBtn.addEventListener('click', makeTransfer);
+            closeAdminBtn.addEventListener('click', closeAdminPanel);
+            addFundsBtn.addEventListener('click', addFunds);
+            
+            // Обработчик тройного клика по балансу
+            balanceContainer.addEventListener('click', handleBalanceClick);
+            
+            // Валидация в реальном времени
+            userNameInput.addEventListener('input', validateName);
+            recipientAccountInput.addEventListener('input', validateAccountNumber);
+            transferAmountInput.addEventListener('input', validateTransferAmount);
+            adminAmountInput.addEventListener('input', validateAdminAmount);
+            adminSenderInput.addEventListener('input', validateAdminSender);
+            
+            // Обновление доступного баланса при изменении суммы перевода
+            transferAmountInput.addEventListener('input', updateTransferButtonState);
+            
+            // Автосохранение при изменении полей ввода
+            userNameInput.addEventListener('input', autoSaveUserName);
+            recipientAccountInput.addEventListener('input', autoSaveTransferData);
+            transferAmountInput.addEventListener('input', autoSaveTransferData);
+            transferCommentInput.addEventListener('input', autoSaveTransferData);
+            adminAmountInput.addEventListener('input', autoSaveAdminData);
+            adminSenderInput.addEventListener('input', autoSaveAdminData);
+            adminCommentInput.addEventListener('input', autoSaveAdminData);
+        }
+        
+        // Валидация имени
+        function validateName() {
+            const name = userNameInput.value.trim();
+            const isValid = name.length > 0;
+            
+            if (!isValid) {
+                userNameInput.classList.add('error');
+                nameError.classList.add('show');
+            } else {
+                userNameInput.classList.remove('error');
+                nameError.classList.remove('show');
+            }
+            
+            return isValid;
+        }
+        
+        // Валидация номера счета (только цифры)
+        function validateAccountNumber() {
+            const account = recipientAccountInput.value.trim();
+            const isValid = /^\d+$/.test(account) && account.length >= 5;
+            
+            if (!isValid && account.length > 0) {
+                recipientAccountInput.classList.add('error');
+                accountError.classList.add('show');
+            } else {
+                recipientAccountInput.classList.remove('error');
+                accountError.classList.remove('show');
+            }
+            
+            updateTransferButtonState();
+            return isValid;
+        }
+        
+        // Валидация суммы перевода
+        function validateTransferAmount() {
+            const amount = parseInt(transferAmountInput.value);
+            const isValid = amount > 0;
+            
+            if (!isValid && transferAmountInput.value.length > 0) {
+                transferAmountInput.classList.add('error');
+                amountError.classList.add('show');
+            } else {
+                transferAmountInput.classList.remove('error');
+                amountError.classList.remove('show');
+            }
+            
+            // Проверка достаточности средств
+            if (amount > userData.balance) {
+                showInsufficientFundsError();
+            }
+            
+            updateTransferButtonState();
+            return isValid;
+        }
+        
+        // Валидация суммы в админ-панели
+        function validateAdminAmount() {
+            const amount = parseInt(adminAmountInput.value);
+            const isValid = amount > 0;
+            
+            if (!isValid && adminAmountInput.value.length > 0) {
+                adminAmountInput.classList.add('error');
+                adminAmountError.classList.add('show');
+            } else {
+                adminAmountInput.classList.remove('error');
+                adminAmountError.classList.remove('show');
+            }
+            
+            return isValid;
+        }
+        
+        // Валидация отправителя в админ-панели
+        function validateAdminSender() {
+            const sender = adminSenderInput.value.trim();
+            const isValid = sender.length > 0;
+            
+            if (!isValid && adminSenderInput.value.length > 0) {
+                adminSenderInput.classList.add('error');
+                adminSenderError.classList.add('show');
+            } else {
+                adminSenderInput.classList.remove('error');
+                adminSenderError.classList.remove('show');
+            }
+            
+            return isValid;
+        }
+        
+        // Показать ошибку недостатка средств
+        function showInsufficientFundsError() {
+            const amount = parseInt(transferAmountInput.value) || 0;
+            if (amount > userData.balance) {
+                showNotification('У вас недостаточно средств для этой транзакции!', 'warning');
+            }
+        }
+        
+        // Обновление состояния кнопки перевода
+        function updateTransferButtonState() {
+            const account = recipientAccountInput.value.trim();
+            const amount = parseInt(transferAmountInput.value);
+            const isAccountValid = /^\d+$/.test(account) && account.length >= 5;
+            const isAmountValid = amount > 0;
+            const hasSufficientFunds = amount <= userData.balance;
+            
+            sendTransferBtn.disabled = !(isAccountValid && isAmountValid && hasSufficientFunds);
+        }
+        
+        // Обновление доступного баланса
+        function updateAvailableBalance() {
+            availableBalance.textContent = `${formatCurrency(userData.balance)} ₽`;
+            availableBalance.className = userData.balance > 0 ? 'positive' : '';
+        }
+        
+        // Автосохранение имени пользователя
+        function autoSaveUserName() {
+            localStorage.setItem('sberbank_temp_name', userNameInput.value);
+        }
+        
+        // Автосохранение данных перевода
+        function autoSaveTransferData() {
+            const transferData = {
+                recipientAccount: recipientAccountInput.value,
+                amount: transferAmountInput.value,
+                comment: transferCommentInput.value
+            };
+            localStorage.setItem('sberbank_temp_transfer', JSON.stringify(transferData));
+        }
+        
+        // Автосохранение данных админ-панели
+        function autoSaveAdminData() {
+            const adminData = {
+                amount: adminAmountInput.value,
+                sender: adminSenderInput.value,
+                comment: adminCommentInput.value
+            };
+            localStorage.setItem('sberbank_temp_admin', JSON.stringify(adminData));
+        }
+        
+        // Загрузка временных данных
+        function loadTemporaryData() {
+            // Загрузка временного имени
+            const tempName = localStorage.getItem('sberbank_temp_name');
+            if (tempName) {
+                userNameInput.value = tempName;
+            }
+            
+            // Загрузка временных данных перевода
+            const tempTransfer = localStorage.getItem('sberbank_temp_transfer');
+            if (tempTransfer) {
+                try {
+                    const transferData = JSON.parse(tempTransfer);
+                    recipientAccountInput.value = transferData.recipientAccount || '';
+                    transferAmountInput.value = transferData.amount || '';
+                    transferCommentInput.value = transferData.comment || '';
+                    
+                    // Валидация загруженных данных
+                    validateAccountNumber();
+                    validateTransferAmount();
+                } catch (e) {
+                    console.log('Ошибка загрузки временных данных перевода');
+                }
+            }
+            
+            // Загрузка временных данных админ-панели
+            const tempAdmin = localStorage.getItem('sberbank_temp_admin');
+            if (tempAdmin) {
+                try {
+                    const adminData = JSON.parse(tempAdmin);
+                    adminAmountInput.value = adminData.amount || '1000';
+                    adminSenderInput.value = adminData.sender || 'СберБанк';
+                    adminCommentInput.value = adminData.comment || 'Пополнение счёта';
+                } catch (e) {
+                    console.log('Ошибка загрузки временных данных админ-панели');
+                }
+            }
+        }
+        
+        // Обновление времени
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                              now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('current-time').textContent = timeString;
+        }
+        
+        // Загрузка данных пользователя из localStorage
+        function loadUserData() {
+            const savedData = localStorage.getItem('sberbankUserData');
+            
+            if (savedData) {
+                try {
+                    userData = JSON.parse(savedData);
+                    
+                    // Проверка структуры данных
+                    if (!userData.transactions) {
+                        userData.transactions = [];
+                    }
+                    
+                    if (!userData.accountCreated && userData.transactions.length > 0) {
+                        userData.accountCreated = userData.transactions[0].date;
+                    }
+                    
+                    // Восстановление данных в интерфейсе
+                    displayName.textContent = userData.name;
+                    userAvatar.textContent = userData.name ? userData.name.charAt(0) : 'И';
+                    accountNumber.textContent = `Счёт: ${formatAccountNumber(userData.account)}`;
+                    balanceElement.textContent = `${formatCurrency(userData.balance)} ₽`;
+                    
+                    // Установка даты открытия счёта
+                    const accountCreationDate = userData.accountCreated ? 
+                        new Date(userData.accountCreated) : new Date();
+                    accountDate.textContent = formatDate(accountCreationDate);
+                    
+                    // Обновление истории
+                    updateHistoryList();
+                    
+                    // Загрузка временных данных
+                    loadTemporaryData();
+                    
+                    // Показываем главный экран, так как пользователь уже зарегистрирован
+                    showScreen(mainScreen);
+                    
+                    console.log('Данные пользователя загружены:', userData);
+                    return;
+                } catch (e) {
+                    console.error('Ошибка загрузки данных:', e);
+                    // Если данные повреждены, показываем экран регистрации
+                    showScreen(registerScreen);
+                }
+            } else {
+                // Нет сохраненных данных - показываем экран регистрации
+                showScreen(registerScreen);
+            }
+            
+            // Установка даты открытия счёта для нового пользователя
+            const now = new Date();
+            accountDate.textContent = formatDate(now);
+        }
+        
+        // Сохранение данных пользователя в localStorage
+        function saveUserData() {
+            try {
+                // Убедимся, что все обязательные поля заполнены
+                if (!userData.accountCreated && userData.transactions.length > 0) {
+                    userData.accountCreated = userData.transactions[0].date;
+                }
+                
+                localStorage.setItem('sberbankUserData', JSON.stringify(userData));
+                console.log('Данные сохранены:', userData);
+            } catch (e) {
+                console.error('Ошибка сохранения данных:', e);
+                showNotification('Ошибка сохранения данных', 'error');
+            }
+        }
+        
+        // Регистрация пользователя
+        function registerUser() {
+            if (!validateName()) {
+                showNotification('Введите ваше имя', 'error');
+                userNameInput.focus();
+                return;
+            }
+            
+            const name = userNameInput.value.trim();
+            
+            // Очистка временного имени
+            localStorage.removeItem('sberbank_temp_name');
+            
+            userData.name = name;
+            userData.account = generateAccountNumber();
+            userData.balance = 0;
+            userData.accountCreated = new Date().toISOString();
+            userData.transactions = [
+                {
+                    id: Date.now(),
+                    type: 'account_opening',
+                    name: 'Открытие счёта',
+                    amount: 0,
+                    date: new Date().toISOString(),
+                    comment: 'Открытие счёта в СберБанке'
+                }
+            ];
+            
+            // Обновление интерфейса
+            displayName.textContent = name;
+            userAvatar.textContent = name.charAt(0);
+            accountNumber.textContent = `Счёт: ${formatAccountNumber(userData.account)}`;
+            balanceElement.textContent = `${formatCurrency(userData.balance)} ₽`;
+            accountDate.textContent = formatDate(new Date(userData.accountCreated));
+            updateAvailableBalance();
+            
+            // Сохранение и переход на главный экран
+            saveUserData();
+            showScreen(mainScreen);
+            showNotification('Счёт успешно создан!');
+            
+            // Обновление истории
+            updateHistoryList();
+        }
+        
+        // Показать экран перевода
+        function showTransferScreen() {
+            // Обновление активного меню
+            menuMain.classList.remove('active');
+            menuTransfer.classList.add('active');
+            
+            // Обновляем доступный баланс
+            updateAvailableBalance();
+            
+            showScreen(transferScreen);
+            
+            // Фокус на поле ввода номера счета
+            setTimeout(() => {
+                recipientAccountInput.focus();
+            }, 300);
+        }
+        
+        // Выполнить перевод
+        function makeTransfer() {
+            // Проверка валидности данных
+            if (!validateAccountNumber()) {
+                showNotification('Введите корректный номер счёта (только цифры)', 'error');
+                recipientAccountInput.focus();
+                return;
+            }
+            
+            if (!validateTransferAmount()) {
+                showNotification('Введите сумму перевода', 'error');
+                transferAmountInput.focus();
+                return;
+            }
+            
+            const recipientAccount = recipientAccountInput.value.trim();
+            const amount = parseInt(transferAmountInput.value);
+            const comment = transferCommentInput.value.trim();
+            
+            // Проверка достаточности средств
+            if (amount > userData.balance) {
+                showNotification('У вас недостаточно средств для этой транзакции!', 'warning');
+                transferAmountInput.focus();
+                return;
+            }
+            
+            // Выполнение перевода
+            userData.balance -= amount;
+            
+            // Добавление транзакции в историю
+            const transaction = {
+                id: Date.now(),
+                type: 'transfer_out',
+                name: `Перевод на счёт ${recipientAccount.substring(0, 8)}...`,
+                amount: -amount, // Отрицательное значение для перевода
+                date: new Date().toISOString(),
+                comment: comment || 'Перевод средств'
+            };
+            
+            userData.transactions.unshift(transaction);
+            
+            // Обновление интерфейса
+            balanceElement.textContent = `${formatCurrency(userData.balance)} ₽`;
+            updateAvailableBalance();
+            updateHistoryList();
+            
+            // Очистка временных данных перевода
+            localStorage.removeItem('sberbank_temp_transfer');
+            
+            // Очистка полей формы
+            recipientAccountInput.value = '';
+            transferAmountInput.value = '';
+            transferCommentInput.value = '';
+            
+            // Сброс валидации
+            recipientAccountInput.classList.remove('error');
+            transferAmountInput.classList.remove('error');
+            accountError.classList.remove('show');
+            amountError.classList.remove('show');
+            
+            // Показ уведомления и возврат на главный экран
+            showNotification(`Перевод на сумму ${amount} ₽ выполнен успешно!`);
+            showScreen(mainScreen);
+            menuMain.classList.add('active');
+            menuTransfer.classList.remove('active');
+            
+            // Сохранение данных
+            saveUserData();
+            
+            // Анимация баланса
+            balanceContainer.classList.add('pulse');
+            setTimeout(() => {
+                balanceContainer.classList.remove('pulse');
+            }, 1500);
+        }
+        
+        // Обработчик тройного клика по балансу
+        function handleBalanceClick() {
+            const currentTime = Date.now();
+            
+            // Сброс счетчика, если прошло более 1 секунды
+            if (currentTime - lastClickTime > 1000) {
+                clickCount = 0;
+            }
+            
+            clickCount++;
+            lastClickTime = currentTime;
+            
+            // Если было 3 клика за 1 секунду
+            if (clickCount === 3) {
+                clickCount = 0;
+                showAdminPanel();
+            }
+        }
+        
+        // Показать админ-панель
+        function showAdminPanel() {
+            adminPanel.classList.add('active');
+        }
+        
+        // Закрыть админ-панель
+        function closeAdminPanel() {
+            adminPanel.classList.remove('active');
+        }
+        
+        // Пополнить баланс через админ-панель
+        function addFunds() {
+            // Проверка валидности данных
+            if (!validateAdminAmount()) {
+                showNotification('Введите сумму пополнения', 'error');
+                adminAmountInput.focus();
+                return;
+            }
+            
+            if (!validateAdminSender()) {
+                showNotification('Введите отправителя', 'error');
+                adminSenderInput.focus();
+                return;
+            }
+            
+            const amount = parseInt(adminAmountInput.value);
+            const sender = adminSenderInput.value.trim();
+            const comment = adminCommentInput.value.trim();
+            
+            // Пополнение баланса
+            userData.balance += amount;
+            
+            // Добавление транзакции в историю
+            const transaction = {
+                id: Date.now(),
+                type: 'deposit',
+                name: `Пополнение от ${sender}`,
+                amount: amount, // Положительное значение для пополнения
+                date: new Date().toISOString(),
+                comment: comment || 'Пополнение счёта'
+            };
+            
+            userData.transactions.unshift(transaction);
+            
+            // Обновление интерфейса
+            balanceElement.textContent = `${formatCurrency(userData.balance)} ₽`;
+            updateAvailableBalance();
+            updateHistoryList();
+            
+            // Очистка временных данных админ-панели
+            localStorage.removeItem('sberbank_temp_admin');
+            
+            // Сброс валидации
+            adminAmountInput.classList.remove('error');
+            adminSenderInput.classList.remove('error');
+            adminAmountError.classList.remove('show');
+            adminSenderError.classList.remove('show');
+            
+            // Сброс значений полей админ-панели
+            adminAmountInput.value = '1000';
+            adminSenderInput.value = 'СберБанк';
+            adminCommentInput.value = 'Пополнение счёта';
+            
+            // Закрытие админ-панели и показ уведомления
+            closeAdminPanel();
+            showNotification(`Баланс пополнен на ${amount} ₽`);
+            
+            // Сохранение данных
+            saveUserData();
+            
+            // Анимация баланса
+            balanceContainer.classList.add('pulse');
+            setTimeout(() => {
+                balanceContainer.classList.remove('pulse');
+            }, 1500);
+        }
+        
+        // Обновление списка истории операций
+        function updateHistoryList() {
+            // Очистка списка (кроме элемента открытия счёта)
+            const existingItems = historyList.querySelectorAll('.history-item');
+            existingItems.forEach((item, index) => {
+                if (index > 0) item.remove();
+            });
+            
+            // Добавление транзакций
+            userData.transactions.forEach((transaction, index) => {
+                if (index === 0) {
+                    // Обновление первой транзакции (открытие счёта)
+                    const firstItem = historyList.querySelector('.history-item');
+                    if (firstItem) {
+                        const amountElement = firstItem.querySelector('.transaction-amount');
+                        const dateElement = firstItem.querySelector('.transaction-date');
+                        
+                        if (dateElement && transaction.date) {
+                            dateElement.textContent = formatDate(new Date(transaction.date));
+                        }
+                        
+                        if (amountElement) {
+                            amountElement.textContent = `${formatCurrency(transaction.amount)} ₽`;
+                            // Открытие счёта всегда отображается зеленым
+                            amountElement.className = 'transaction-amount positive';
+                        }
+                    }
+                    return;
+                }
+                
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.style.animationDelay = `${index * 0.1}s`;
+                
+                // ФИКСИРУЕМ ЛОГИКУ ЦВЕТОВ:
+                // Если сумма ПОЛОЖИТЕЛЬНАЯ (пополнение) -> зеленый
+                // Если сумма ОТРИЦАТЕЛЬНАЯ (перевод) -> красный
+                const amount = transaction.amount;
+                const amountClass = amount >= 0 ? 'positive' : 'negative';
+                const amountSign = amount > 0 ? '+' : (amount < 0 ? '-' : '');
+                
+                const transactionDate = transaction.date ? new Date(transaction.date) : new Date();
+                
+                historyItem.innerHTML = `
+                    <div class="transaction-info">
+                        <div class="transaction-name">${transaction.name}</div>
+                        <div class="transaction-date">${formatDate(transactionDate)}</div>
+                        ${transaction.comment ? `<div class="transaction-comment">${transaction.comment}</div>` : ''}
+                    </div>
+                    <div class="transaction-amount ${amountClass}">${amountSign}${formatCurrency(Math.abs(amount))} ₽</div>
+                `;
+                
+                historyList.appendChild(historyItem);
+            });
+            
+            // Обновление счетчика операций
+            const transactionCount = Math.max(0, userData.transactions.length - 1);
+            historyCount.textContent = `${transactionCount} ${getTransactionWord(transactionCount)}`;
+        }
+        
+        // Показать экран
+        function showScreen(screen) {
+            // Скрыть все экраны
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.remove('active');
+            });
+            
+            // Показать нужный экран
+            screen.classList.add('active');
+        }
+        
+        // Показать уведомление
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.className = 'notification';
+            
+            if (type === 'error') {
+                notification.classList.add('error');
+            } else if (type === 'warning') {
+                notification.classList.add('warning');
+            }
+            
+            notification.style.display = 'block';
+            
+            // Скрыть уведомление через 3 секунды
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Вспомогательные функции
+        function generateAccountNumber() {
+            // Генерация 20-значного номера счёта
+            let account = '';
+            for (let i = 0; i < 20; i++) {
+                account += Math.floor(Math.random() * 10);
+            }
+            return account;
+        }
+        
+        function formatAccountNumber(account) {
+            // Форматирование номера счёта для отображения
+            if (!account) return 'Счёт: •••• 0000';
+            return `Счёт: •••• ${account.substring(16)}`;
+        }
+        
+        function formatCurrency(amount) {
+            // Форматирование суммы с разделителями тысяч
+            const numAmount = Math.abs(Number(amount) || 0);
+            return numAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        }
+        
+        function formatDate(date) {
+            // Форматирование даты
+            const d = new Date(date);
+            if (isNaN(d.getTime())) return '--.--.----';
+            
+            const day = d.getDate().toString().padStart(2, '0');
+            const month = (d.getMonth() + 1).toString().padStart(2, '0');
+            const year = d.getFullYear();
+            return `${day}.${month}.${year}`;
+        }
+        
+        function getTransactionWord(count) {
+            // Склонение слова "операция" в зависимости от количества
+            if (count % 10 === 1 && count % 100 !== 11) {
+                return 'операция';
+            } else if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) {
+                return 'операции';
+            } else {
+                return 'операций';
+            }
+        }
+        
+        // Инициализация приложения при загрузке
+        document.addEventListener('DOMContentLoaded', initApp);
+        
+        // Сохранение данных перед закрытием страницы
+        window.addEventListener('beforeunload', function() {
+            saveUserData();
+        });
+    </script>
 </body>
 </html>
