@@ -595,6 +595,7 @@
                         <div class="transaction-info">
                             <div class="transaction-name">Открытие счёта</div>
                             <div class="transaction-date" id="account-date"></div>
+                            <div class="transaction-comment">Открытие счёта в СберБанке</div>
                         </div>
                         <div class="transaction-amount positive">0 ₽</div>
                     </div>
@@ -1290,54 +1291,33 @@
             }, 1500);
         }
         
-        // Обновление списка истории операций
+        // Обновление списка истории операций - ИСПРАВЛЕННЫЙ МЕТОД
         function updateHistoryList() {
-            // Очистка списка (кроме элемента открытия счёта)
-            const existingItems = historyList.querySelectorAll('.history-item');
-            existingItems.forEach((item, index) => {
-                if (index > 0) item.remove();
-            });
+            // Полностью очищаем список истории
+            historyList.innerHTML = '';
             
-            // Добавление транзакций
+            // Добавляем все транзакции
             userData.transactions.forEach((transaction, index) => {
-                if (index === 0) {
-                    // Обновление первой транзакции (открытие счёта)
-                    const firstItem = historyList.querySelector('.history-item');
-                    if (firstItem) {
-                        const amountElement = firstItem.querySelector('.transaction-amount');
-                        const dateElement = firstItem.querySelector('.transaction-date');
-                        
-                        if (dateElement && transaction.date) {
-                            dateElement.textContent = formatDate(new Date(transaction.date));
-                        }
-                        
-                        if (amountElement) {
-                            amountElement.textContent = `${formatCurrency(transaction.amount)} ₽`;
-                            // Открытие счёта всегда отображается зеленым
-                            amountElement.className = 'transaction-amount positive';
-                        }
-                    }
-                    return;
-                }
-                
                 const historyItem = document.createElement('div');
                 historyItem.className = 'history-item';
                 historyItem.style.animationDelay = `${index * 0.1}s`;
                 
-                // ФИКСИРУЕМ ЛОГИКУ ЦВЕТОВ:
-                // Если сумма ПОЛОЖИТЕЛЬНАЯ (пополнение) -> зеленый
-                // Если сумма ОТРИЦАТЕЛЬНАЯ (перевод) -> красный
+                // Определяем цвет по знаку суммы
                 const amount = transaction.amount;
                 const amountClass = amount >= 0 ? 'positive' : 'negative';
                 const amountSign = amount > 0 ? '+' : (amount < 0 ? '-' : '');
                 
                 const transactionDate = transaction.date ? new Date(transaction.date) : new Date();
                 
+                // Всегда показываем комментарий, если он есть
+                const commentHTML = transaction.comment ? 
+                    `<div class="transaction-comment">${transaction.comment}</div>` : '';
+                
                 historyItem.innerHTML = `
                     <div class="transaction-info">
                         <div class="transaction-name">${transaction.name}</div>
                         <div class="transaction-date">${formatDate(transactionDate)}</div>
-                        ${transaction.comment ? `<div class="transaction-comment">${transaction.comment}</div>` : ''}
+                        ${commentHTML}
                     </div>
                     <div class="transaction-amount ${amountClass}">${amountSign}${formatCurrency(Math.abs(amount))} ₽</div>
                 `;
@@ -1346,7 +1326,7 @@
             });
             
             // Обновление счетчика операций
-            const transactionCount = Math.max(0, userData.transactions.length - 1);
+            const transactionCount = Math.max(0, userData.transactions.length);
             historyCount.textContent = `${transactionCount} ${getTransactionWord(transactionCount)}`;
         }
         
