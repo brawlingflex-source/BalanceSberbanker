@@ -3,832 +3,1433 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Призыв духов - Опасное приложение</title>
+    <title>Сбербанк Онлайн</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Courier New', monospace;
+            font-family: 'Roboto', sans-serif;
         }
-        
+
         body {
-            background-color: #0c0c0c;
-            color: #cc0000;
+            background: linear-gradient(135deg, #1a5f23 0%, #0a3c14 100%);
+            color: #333;
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-        
-        /* Фоновые эффекты с искрами */
-        .bg-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(139, 0, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(139, 0, 0, 0.1) 0%, transparent 50%);
-            z-index: -3;
-            pointer-events: none;
-        }
-        
-        .static-effect {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc0IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiBmaWx0ZXI9InVybCgjYSkiIG9wYWNpdHk9Ii4wMyIvPjwvc3ZnPg==');
-            opacity: 0.15;
-            z-index: -2;
-            pointer-events: none;
-            animation: static 0.5s infinite;
-        }
-        
-        @keyframes static {
-            0% { opacity: 0.1; }
-            50% { opacity: 0.2; }
-            100% { opacity: 0.1; }
-        }
-        
-        /* Контейнер для искр */
-        .sparks-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        
-        .spark {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background-color: #ff0000;
-            border-radius: 50%;
-            box-shadow: 0 0 6px 2px #ff0000;
-            opacity: 0;
-        }
-        
-        /* Контейнер приложения */
-        .app-container {
-            max-width: 1200px;
-            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
         }
-        
-        /* Шапка */
-        header {
-            text-align: center;
-            padding: 30px 20px;
-            border-bottom: 2px solid #8b0000;
-            margin-bottom: 40px;
+
+        .app-container {
+            width: 100%;
+            max-width: 400px;
+            height: 700px;
+            background-color: #fff;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             position: relative;
+            animation: fadeIn 0.8s ease-out;
         }
-        
-        .app-title {
-            font-size: 3rem;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px #8b0000, 0 0 20px #8b0000;
-            animation: pulse 3s infinite;
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        @keyframes pulse {
-            0% { text-shadow: 0 0 10px #8b0000, 0 0 20px #8b0000; }
-            50% { text-shadow: 0 0 15px #ff0000, 0 0 30px #8b0000; }
-            100% { text-shadow: 0 0 10px #8b0000, 0 0 20px #8b0000; }
+
+        /* Заголовок приложения */
+        .app-header {
+            background: linear-gradient(to right, #0a3c14, #1a5f23);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-        
-        .app-subtitle {
-            font-size: 1.2rem;
-            color: #a9a9a9;
-            margin-bottom: 20px;
+
+        .app-header .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 5px;
         }
-        
-        .warning {
-            background-color: #1a0000;
-            border: 1px solid #8b0000;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-        }
-        
-        .warning i {
-            color: #ff0000;
+
+        .app-header .logo i {
+            font-size: 28px;
             margin-right: 10px;
         }
-        
-        /* Основной контент */
-        .spirits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
+
+        .app-header h1 {
+            font-weight: 700;
+            font-size: 22px;
+            letter-spacing: 0.5px;
         }
-        
-        .spirit-card {
-            background-color: #1a0000;
-            border: 1px solid #8b0000;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
+
+        .app-header .time {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 14px;
+            font-weight: 500;
         }
-        
-        .spirit-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(139, 0, 0, 0.3);
-        }
-        
-        .spirit-image {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-bottom: 1px solid #8b0000;
-        }
-        
-        .spirit-info {
+
+        /* Экран регистрации */
+        .screen {
+            display: none;
+            height: calc(100% - 100px);
             padding: 20px;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: slideIn 0.5s ease-out;
         }
-        
-        .spirit-name {
-            font-size: 1.8rem;
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        .welcome-message {
+            text-align: center;
+            margin-top: 20px;
+            color: #1a5f23;
+        }
+
+        .welcome-message h2 {
+            font-size: 26px;
             margin-bottom: 10px;
-            color: #ff3333;
         }
-        
-        .spirit-description {
-            color: #b0b0b0;
-            font-size: 0.95rem;
+
+        .welcome-message p {
+            font-size: 16px;
+            color: #666;
             line-height: 1.5;
-            margin-bottom: 20px;
         }
-        
-        /* Кнопка вызова */
-        .summon-btn {
+
+        .input-container {
+            margin: 30px 0;
+        }
+
+        .input-container label {
             display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .input-container input {
             width: 100%;
-            background-color: #8b0000;
-            color: #fff;
-            border: none;
             padding: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .input-container input:focus {
+            border-color: #1a5f23;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 95, 35, 0.1);
+        }
+
+        .input-container input.error {
+            border-color: #ff4444;
+            background-color: rgba(255, 68, 68, 0.05);
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .button {
+            background: linear-gradient(to right, #1a5f23, #0a3c14);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .summon-btn:hover {
-            background-color: #b30000;
-            letter-spacing: 3px;
-        }
-        
-        .summon-btn:active {
-            transform: scale(0.98);
-        }
-        
-        .summon-btn::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
+            text-align: center;
+            display: block;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+            box-shadow: 0 4px 15px rgba(26, 95, 35, 0.2);
         }
-        
-        .summon-btn:hover::after {
-            left: 100%;
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 95, 35, 0.3);
         }
-        
-        /* Модальное окно вызова */
-        .summon-modal {
-            display: none;
-            position: fixed;
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .button-secondary {
+            background: #f0f0f0;
+            color: #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .button-secondary:hover {
+            background: #e5e5e5;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Главный экран */
+        .user-info {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(to right, #1a5f23, #0a3c14);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+
+        .user-details h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .user-details p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Баланс */
+        .balance-container {
+            background: linear-gradient(135deg, #1a5f23, #0a3c14);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(26, 95, 35, 0.2);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .balance-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .balance-container h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .balance-amount {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* Меню быстрых действий */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-btn {
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            padding: 15px 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-3px);
+        }
+
+        .action-btn i {
+            font-size: 24px;
+            color: #1a5f23;
+            margin-bottom: 8px;
+        }
+
+        .action-btn span {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* История операций */
+        .history-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .history-title h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .history-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 250px;
+            padding-right: 5px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            animation: fadeInItem 0.5s ease-out;
+        }
+
+        @keyframes fadeInItem {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-info {
+            flex-grow: 1;
+        }
+
+        .transaction-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .transaction-date, .transaction-comment {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .transaction-amount {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .positive {
+            color: #1a5f23;
+        }
+
+        .negative {
+            color: #d32f2f;
+        }
+
+        /* Экран перевода */
+        .transfer-form {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transfer-form .input-container {
+            margin-bottom: 20px;
+        }
+
+        /* Админ-панель */
+        .admin-panel {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            justify-content: center;
+            color: white;
+            padding: 30px 20px;
+            display: none;
+            flex-direction: column;
+            z-index: 100;
+            animation: fadeInAdmin 0.5s ease-out;
+        }
+
+        @keyframes fadeInAdmin {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .admin-panel.active {
+            display: flex;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 20px;
-        }
-        
-        .modal-content {
-            background-color: #1a0000;
-            border: 2px solid #8b0000;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 600px;
-            padding: 30px;
-            position: relative;
-            animation: modalAppear 0.5s;
-            box-shadow: 0 0 40px rgba(139, 0, 0, 0.5);
-        }
-        
-        @keyframes modalAppear {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        
-        .modal-header {
-            text-align: center;
             margin-bottom: 30px;
         }
-        
-        .modal-title {
-            font-size: 2.2rem;
-            color: #ff3333;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px #8b0000;
+
+        .admin-header h2 {
+            font-size: 24px;
+            color: #4CAF50;
         }
-        
-        .modal-subtitle {
-            color: #b0b0b0;
-            font-size: 1.1rem;
-        }
-        
-        .modal-body {
-            margin-bottom: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            color: #cc0000;
-            font-weight: bold;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            background-color: #0c0c0c;
-            border: 1px solid #8b0000;
-            border-radius: 5px;
-            color: #fff;
-            font-size: 1rem;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: #ff0000;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
-        }
-        
-        .time-warning {
-            background-color: rgba(139, 0, 0, 0.2);
-            border-left: 4px solid #8b0000;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 0 5px 5px 0;
-        }
-        
-        .time-warning i {
-            color: #ff0000;
-            margin-right: 10px;
-        }
-        
-        .loading-container {
-            display: none;
-            text-align: center;
-            margin: 30px 0;
-        }
-        
-        .loading-bar {
-            width: 100%;
-            height: 20px;
-            background-color: #0c0c0c;
-            border: 1px solid #8b0000;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
-        
-        .loading-progress {
-            height: 100%;
-            width: 0%;
-            background-color: #8b0000;
-            border-radius: 10px;
-            transition: width 0.3s;
-        }
-        
-        .loading-text {
-            color: #cc0000;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
-        
-        .success-message {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .success-icon {
-            font-size: 4rem;
-            color: #ff0000;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-        
-        .success-text {
-            font-size: 1.5rem;
-            color: #ff3333;
-            margin-bottom: 20px;
-        }
-        
-        .success-details {
-            color: #b0b0b0;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-        
-        /* Кнопки */
-        .btn {
-            display: block;
-            width: 100%;
-            background-color: #8b0000;
-            color: #fff;
-            border: none;
-            padding: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        
-        .btn:hover {
-            background-color: #b30000;
-            letter-spacing: 3px;
-        }
-        
-        .btn-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
+
+        .close-admin {
             background: none;
             border: none;
-            color: #cc0000;
-            font-size: 1.5rem;
+            color: white;
+            font-size: 24px;
             cursor: pointer;
-            width: auto;
-            padding: 5px;
         }
-        
-        .btn-close:hover {
-            color: #ff0000;
+
+        .admin-form {
+            flex-grow: 1;
         }
-        
-        /* Футер */
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            border-top: 1px solid #8b0000;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .app-title {
-                font-size: 2.2rem;
-            }
-            
-            .spirits-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .modal-content {
-                padding: 20px;
-            }
-            
-            .modal-title {
-                font-size: 1.8rem;
-            }
-        }
-        
-        /* Анимация свечей */
-        .candles {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 80px;
+
+        /* Нижнее меню */
+        .bottom-menu {
             display: flex;
             justify-content: space-around;
-            z-index: -1;
-            opacity: 0.3;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+            background-color: #fff;
         }
-        
-        .candle {
-            width: 20px;
-            height: 60px;
-            background: linear-gradient(to right, #8b4513, #a0522d, #8b4513);
-            border-radius: 3px;
-            position: relative;
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 10px;
+            transition: all 0.3s;
         }
-        
-        .candle::before {
-            content: '';
+
+        .menu-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .menu-item.active {
+            color: #1a5f23;
+        }
+
+        .menu-item i {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .menu-item span {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Анимации и дополнительные стили */
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(26, 95, 35, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(26, 95, 35, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(26, 95, 35, 0); }
+        }
+
+        .notification {
             position: absolute;
-            top: -15px;
+            top: 120px;
             left: 50%;
             transform: translateX(-50%);
-            width: 15px;
-            height: 20px;
-            background: #8b0000;
-            border-radius: 50% 50% 20% 20%;
-            box-shadow: 0 0 20px #ff0000;
-            animation: flicker 2s infinite alternate;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 200;
+            display: none;
+            animation: slideDown 0.5s ease-out;
         }
-        
-        @keyframes flicker {
-            0%, 100% { box-shadow: 0 0 20px #ff0000; height: 20px; }
-            25% { box-shadow: 0 0 15px #ff4500; height: 18px; }
-            50% { box-shadow: 0 0 25px #ff0000; height: 22px; }
-            75% { box-shadow: 0 0 18px #ff4500; height: 19px; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translate(-50%, -20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        .notification.error {
+            background-color: #f44336;
+        }
+
+        .notification.warning {
+            background-color: #ff9800;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1a5f23;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
-    <!-- Фоновые эффекты -->
-    <div class="bg-overlay"></div>
-    <div class="static-effect"></div>
-    
-    <!-- Контейнер для искр -->
-    <div class="sparks-container" id="sparksContainer"></div>
-    
-    <!-- Свечи -->
-    <div class="candles">
-        <div class="candle"></div>
-        <div class="candle"></div>
-        <div class="candle"></div>
-        <div class="candle"></div>
-        <div class="candle"></div>
-    </div>
-    
-    <!-- Модальное окно вызова -->
-    <div class="summon-modal" id="summonModal">
-        <div class="modal-content">
-            <button class="btn-close" id="closeModal">&times;</button>
-            
-            <!-- Шаг 1: Форма заказа -->
-            <div class="modal-step" id="step1">
-                <div class="modal-header">
-                    <h2 class="modal-title" id="spiritModalName">ДУХ</h2>
-                    <p class="modal-subtitle">Оформление заказа на призыв</p>
-                </div>
-                
-                <div class="modal-body">
-                    <div class="time-warning">
-                        <p><i class="fas fa-exclamation-triangle"></i> <strong>Рекомендуемое время для призыва:</strong> 00:00 - 5:00. В это время духи активнее всего!</p>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="country">Страна</label>
-                        <input type="text" id="country" class="form-input" placeholder="Введите страну">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="city">Город</label>
-                        <input type="text" id="city" class="form-input" placeholder="Введите город">
-                    </div>
-                    
-                    <div class="form-note">
-                        <p style="color: #b0b0b0; font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-info-circle"></i> Этого будет достаточно, дальше дух найдёт Ваше точное место проживания самостоятельно.</p>
-                    </div>
-                </div>
-                
-                <button class="btn" id="startSummonBtn">Начать призыв!</button>
-            </div>
-            
-            <!-- Шаг 2: Загрузка -->
-            <div class="loading-container" id="step2">
-                <div class="loading-text">Пожалуйста, ожидайте...</div>
-                <div class="loading-bar">
-                    <div class="loading-progress" id="loadingProgress"></div>
-                </div>
-                <div class="loading-text">Идёт установка связи с потусторонним миром</div>
-            </div>
-            
-            <!-- Шаг 3: Успех -->
-            <div class="success-message" id="step3">
-                <div class="success-icon">
-                    <i class="fas fa-skull-crossbones"></i>
-                </div>
-                <h3 class="success-text">Ваш заказ принят!</h3>
-                <div class="success-details">
-                    <p>Дух уже в пути, он прибудет по указанному адресу в течение часа.</p>
-                    <p><strong>Ожидайте!</strong></p>
-                    <p style="margin-top: 20px; font-size: 0.9rem;">Рекомендуется приготовить подношение и не смотреть духу прямо в глаза.</p>
-                </div>
-                <button class="btn" id="backToMenuBtn">В меню</button>
+    <div class="app-container">
+        <!-- Заголовок приложения -->
+        <div class="app-header">
+            <div class="time" id="current-time">12:30</div>
+            <div class="logo">
+                <i class="fas fa-university"></i>
+                <h1>СберБанк</h1>
             </div>
         </div>
-    </div>
-    
-    <!-- Основной контейнер -->
-    <div class="app-container" id="mainContainer">
-        <!-- Шапка -->
-        <header>
-            <h1 class="app-title">Призыв духов</h1>
-            <p class="app-subtitle">Опасное приложение для связи с потусторонним миром</p>
+
+        <!-- Уведомление -->
+        <div class="notification" id="notification">Перевод выполнен успешно!</div>
+
+        <!-- Экран регистрации -->
+        <div class="screen active" id="register-screen">
+            <div>
+                <div class="welcome-message">
+                    <h2>Добро пожаловать!</h2>
+                    <p>Введите ваше имя для создания счёта в СберБанке</p>
+                </div>
+                
+                <div class="input-container">
+                    <label for="user-name">Ваше имя</label>
+                    <input type="text" id="user-name" placeholder="Иван Иванов" maxlength="30">
+                    <div class="error-message" id="name-error">Введите ваше имя</div>
+                </div>
+            </div>
             
-            <div class="warning">
-                <p><i class="fas fa-exclamation-triangle"></i> ВНИМАНИЕ: Использование этого приложения может иметь непредсказуемые последствия. Призывайте духов на свой страх и риск. Разработчик не несет ответственности за любые паранормальные явления, возникшие в результате использования этого приложения.</p>
-            </div>
-        </header>
-        
-        <!-- Основной контент - духи -->
-        <main>
-            <div class="spirits-grid">
-                <!-- Домовой -->
-                <div class="spirit-card">
-                    <img src="https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_68b5fb6f566b2d24b0b54c49_68b5fbf0bb5c391cbaf12e3c/scale_1200" alt="Домовой" class="spirit-image">
-                    <div class="spirit-info">
-                        <h3 class="spirit-name">Домовой</h3>
-                        <p class="spirit-description">Дух-хранитель дома, который может как защищать жилище, так и вредить его обитателям, если его разозлить. Обычно невидим, но может проявляться в виде тени или старика.</p>
-                        <button class="summon-btn" data-spirit="domovoy" data-name="Домовой">Вызвать!</button>
+            <button class="button" id="register-btn">Создать счёт</button>
+        </div>
+
+        <!-- Главный экран -->
+        <div class="screen" id="main-screen">
+            <div>
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">И</div>
+                    <div class="user-details">
+                        <h3 id="display-name">Иван Иванов</h3>
+                        <p id="account-number">Счёт: •••• 1234</p>
                     </div>
                 </div>
                 
-                <!-- Леший -->
-                <div class="spirit-card">
-                    <img src="https://masterpiecer-images.s3.yandex.net/7ef885dd75b711ee8ab32aa0df1cd6e5:upscaled" alt="Леший" class="spirit-image">
-                    <div class="spirit-info">
-                        <h3 class="spirit-name">Леший</h3>
-                        <p class="spirit-description">Хозяин леса, способный сбивать с пути путников, прятать тропы и пугать людей странными звуками. Может принимать различные облики, от дерева до медведя.</p>
-                        <button class="summon-btn" data-spirit="leshy" data-name="Леший">Вызвать!</button>
+                <div class="balance-container" id="balance-container">
+                    <h3>Баланс счёта</h3>
+                    <div class="balance-amount" id="balance">0 ₽</div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="action-btn" id="transfer-btn">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Перевести</span>
+                    </div>
+                    <div class="action-btn">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Оплатить</span>
+                    </div>
+                    <div class="action-btn">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Карты</span>
+                    </div>
+                    <div class="action-btn">
+                        <i class="fas fa-history"></i>
+                        <span>История</span>
                     </div>
                 </div>
                 
-                <!-- Утопленник -->
-                <div class="spirit-card">
-                    <img src="https://avatars.mds.yandex.net/get-shedevrum/12445758/img_2f416130302311efa0683a7ffc906bc6/orig" alt="Утопленник" class="spirit-image">
-                    <div class="spirit-info">
-                        <h3 class="spirit-name">Утопленник</h3>
-                        <p class="spirit-description">Дух человека, погибшего в воде. Часто пытается утянуть живых на дно, чтобы заменить себя. Появляется вблизи водоемов, особенно в туманную погоду. Также есть вероятность вызвать утопленника в наполненной водой ванне.</p>
-                        <button class="summon-btn" data-spirit="utoplennik" data-name="Утопленник">Вызвать!</button>
-                    </div>
+                <div class="history-title">
+                    <h3>Последние операции</h3>
+                    <span id="history-count">0 операций</span>
                 </div>
                 
-                <!-- Джефф-Убийца -->
-                <div class="spirit-card">
-                    <img src="https://avatars.mds.yandex.net/i?id=85cbc6071bd40568fc7f2cdf64911842_l-11003961-images-thumbs&n=13" alt="Джефф-Убийца" class="spirit-image">
-                    <div class="spirit-info">
-                        <h3 class="spirit-name">Джефф-Убийца</h3>
-                        <p class="spirit-description">Легендарный интернет-персонаж, серийный убийца без лица. Говорят, что если произнести его имя три раза перед зеркалом, он появится за вашей спиной.</p>
-                        <button class="summon-btn" data-spirit="jeff" data-name="Джефф-Убийца">Вызвать!</button>
-                    </div>
-                </div>
-                
-                <!-- Бабадук -->
-                <div class="spirit-card">
-                    <img src="https://masterpiecer-images.s3.yandex.net/59b2a706933611ee955cca123cab517e:upscaled" alt="Бабадук" class="spirit-image">
-                    <div class="spirit-info">
-                        <h3 class="spirit-name">Бабадук</h3>
-                        <p class="spirit-description">Древнее существо из австралийского фольклора, дух-преследователь. Чем больше вы в него верите и боитесь, тем сильнее он становится и тем ближе подбирается к вам.</p>
-                        <button class="summon-btn" data-spirit="babadook" data-name="Бабадук">Вызвать!</button>
-                    </div>
-                </div>
-                
-                <!-- Слендермен -->
-                <div class="spirit-card">
-                    <img src="https://avatars.mds.yandex.net/i?id=c3d92613b88999704ef5f9a78000c372_l-12605974-images-thumbs&n=13" alt="Слендермен" class="spirit-image">
-                    <div class="spirit-info">
-                        <h3 class="spirit-name">Слендермен</h3>
-                        <p class="spirit-description">Высокое худое существо без лица, в черном костюме, с щупальцами на спине. Прекрасно маскируется среди деревьев и преследует своих жертв, особенно детей.</p>
-                        <button class="summon-btn" data-spirit="slenderman" data-name="Слендермен">Вызвать!</button>
-                    </div>
-                </div>
-                
-                <!-- Сиреноголовый -->
-                <div class="spirit-card">
-                    <img src="https://avatars.mds.yandex.net/i?id=8003b207812bc0a1d4f756d71239fbc3_l-5384143-images-thumbs&n=13" alt="Сиреноголовый" class="spirit-image">
-                    <div class="spirit-info">
-                        <h3 class="spirit-name">Сиреноголовый</h3>
-                        <p class="spirit-description">Гибрид человека и сирены, очень редкое существо с головой-громкоговорителем, издающее оглушительные звуки сирены. Его крик способен разорвать барабанные перепонки и вызвать безумие. Обитает в основном только в деревнях, шанс призыва крайне мал.</p>
-                        <button class="summon-btn" data-spirit="sirenhead" data-name="Сиреноголовый">Вызвать!</button>
+                <div class="history-list" id="history-list">
+                    <!-- История операций будет добавляться сюда -->
+                    <div class="history-item">
+                        <div class="transaction-info">
+                            <div class="transaction-name">Открытие счёта</div>
+                            <div class="transaction-date" id="account-date"></div>
+                        </div>
+                        <div class="transaction-amount positive">0 ₽</div>
                     </div>
                 </div>
             </div>
-        </main>
-        
-        <!-- Футер -->
-        <footer>
-            <p>Призыв духов. Используйте с осторожностью.  Потусторонние технологии</p>
-        
-        </footer>
+            
+            <div class="bottom-menu">
+                <div class="menu-item active" id="menu-main">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </div>
+                <div class="menu-item" id="menu-transfer">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Переводы</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Платежи</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-user"></i>
+                    <span>Профиль</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экран перевода -->
+        <div class="screen" id="transfer-screen">
+            <div>
+                <div class="user-info">
+                    <div class="user-avatar" style="background: linear-gradient(to right, #d32f2f, #b71c1c);">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3>Перевод денег</h3>
+                        <p>На счёт другого клиента</p>
+                    </div>
+                </div>
+                
+                <div class="transfer-form">
+                    <div class="input-container">
+                        <label for="recipient-account">Номер счёта получателя (только цифры)</label>
+                        <input type="text" id="recipient-account" placeholder="Введите номер счёта (только цифры)" maxlength="30">
+                        <div class="error-message" id="account-error">Номер счёта должен содержать только цифры</div>
+                    </div>
+                    
+                    <div class="input-container">
+                        <label for="transfer-amount">Сумма перевода (₽)</label>
+                        <input type="number" id="transfer-amount" placeholder="0" min="1">
+                        <div class="error-message" id="amount-error">Введите сумму перевода</div>
+                    </div>
+                    
+                    <div class="input-container">
+                        <label for="transfer-comment">Комментарий к переводу (необязательно)</label>
+                        <input type="text" id="transfer-comment" placeholder="Например: за услуги">
+                    </div>
+                    
+                    <div class="balance-check">
+                        <div class="balance-info">
+                            <span>Доступно: </span>
+                            <span id="available-balance">0 ₽</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <button class="button" id="send-transfer-btn">Перевести деньги</button>
+                <button class="button button-secondary" id="back-to-main-btn">Назад</button>
+            </div>
+        </div>
+
+        <!-- Админ-панель -->
+        <div class="admin-panel" id="admin-panel">
+            <div class="admin-header">
+                <h2><i class="fas fa-cog"></i> Админ-панель</h2>
+                <button class="close-admin" id="close-admin-btn">&times;</button>
+            </div>
+            
+            <div class="admin-form">
+                <div class="input-container">
+                    <label for="admin-amount">Сумма для пополнения (₽)</label>
+                    <input type="number" id="admin-amount" placeholder="1000" min="1" value="1000">
+                    <div class="error-message" id="admin-amount-error">Введите сумму пополнения</div>
+                </div>
+                
+                <div class="input-container">
+                    <label for="admin-sender">От кого пополнение</label>
+                    <input type="text" id="admin-sender" placeholder="Например: СберБанк" value="СберБанк">
+                    <div class="error-message" id="admin-sender-error">Введите отправителя</div>
+                </div>
+                
+                <div class="input-container">
+                    <label for="admin-comment">Комментарий к пополнению</label>
+                    <input type="text" id="admin-comment" placeholder="Например: Бонус за использование" value="Пополнение счёта">
+                </div>
+            </div>
+            
+            <button class="button" id="add-funds-btn">Пополнить баланс</button>
+        </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Элементы DOM
-            const sparksContainer = document.getElementById('sparksContainer');
-            const summonModal = document.getElementById('summonModal');
-            const closeModal = document.getElementById('closeModal');
-            const spiritModalName = document.getElementById('spiritModalName');
-            const startSummonBtn = document.getElementById('startSummonBtn');
-            const backToMenuBtn = document.getElementById('backToMenuBtn');
-            const step1 = document.getElementById('step1');
-            const step2 = document.getElementById('step2');
-            const step3 = document.getElementById('step3');
-            const loadingProgress = document.getElementById('loadingProgress');
-            const mainContainer = document.getElementById('mainContainer');
+        // Элементы DOM
+        const registerScreen = document.getElementById('register-screen');
+        const mainScreen = document.getElementById('main-screen');
+        const transferScreen = document.getElementById('transfer-screen');
+        const adminPanel = document.getElementById('admin-panel');
+        const notification = document.getElementById('notification');
+        
+        // Кнопки и поля
+        const registerBtn = document.getElementById('register-btn');
+        const userNameInput = document.getElementById('user-name');
+        const nameError = document.getElementById('name-error');
+        const displayName = document.getElementById('display-name');
+        const userAvatar = document.getElementById('user-avatar');
+        const accountNumber = document.getElementById('account-number');
+        const balanceElement = document.getElementById('balance');
+        const balanceContainer = document.getElementById('balance-container');
+        const transferBtn = document.getElementById('transfer-btn');
+        const menuMain = document.getElementById('menu-main');
+        const menuTransfer = document.getElementById('menu-transfer');
+        const backToMainBtn = document.getElementById('back-to-main-btn');
+        const sendTransferBtn = document.getElementById('send-transfer-btn');
+        const closeAdminBtn = document.getElementById('close-admin-btn');
+        const addFundsBtn = document.getElementById('add-funds-btn');
+        const historyList = document.getElementById('history-list');
+        const historyCount = document.getElementById('history-count');
+        const accountDate = document.getElementById('account-date');
+        const availableBalance = document.getElementById('available-balance');
+        
+        // Поля ввода для переводов
+        const recipientAccountInput = document.getElementById('recipient-account');
+        const transferAmountInput = document.getElementById('transfer-amount');
+        const transferCommentInput = document.getElementById('transfer-comment');
+        const accountError = document.getElementById('account-error');
+        const amountError = document.getElementById('amount-error');
+        
+        // Поля ввода для админ-панели
+        const adminAmountInput = document.getElementById('admin-amount');
+        const adminSenderInput = document.getElementById('admin-sender');
+        const adminCommentInput = document.getElementById('admin-comment');
+        const adminAmountError = document.getElementById('admin-amount-error');
+        const adminSenderError = document.getElementById('admin-sender-error');
+        
+        // Данные приложения
+        let userData = {
+            name: '',
+            account: '',
+            balance: 0,
+            accountCreated: '',
+            transactions: []
+        };
+        
+        let clickCount = 0;
+        let lastClickTime = 0;
+        
+        // Инициализация приложения при загрузке
+        function initApp() {
+            // Установка текущего времени
+            updateTime();
+            setInterval(updateTime, 60000);
             
-            let currentSpiritName = '';
+            // Проверка сохраненных данных
+            loadUserData();
             
-            // Создаем искры на фоне
-            function createSparks() {
-                const sparkCount = 50;
-                
-                for (let i = 0; i < sparkCount; i++) {
-                    const spark = document.createElement('div');
-                    spark.className = 'spark';
+            // Обработчики событий
+            setupEventListeners();
+            
+            // Обновляем доступный баланс на экране перевода
+            updateAvailableBalance();
+        }
+        
+        // Настройка всех обработчиков событий
+        function setupEventListeners() {
+            registerBtn.addEventListener('click', registerUser);
+            transferBtn.addEventListener('click', showTransferScreen);
+            menuMain.addEventListener('click', () => showScreen(mainScreen));
+            menuTransfer.addEventListener('click', showTransferScreen);
+            backToMainBtn.addEventListener('click', () => showScreen(mainScreen));
+            sendTransferBtn.addEventListener('click', makeTransfer);
+            closeAdminBtn.addEventListener('click', closeAdminPanel);
+            addFundsBtn.addEventListener('click', addFunds);
+            
+            // Обработчик тройного клика по балансу
+            balanceContainer.addEventListener('click', handleBalanceClick);
+            
+            // Валидация в реальном времени
+            userNameInput.addEventListener('input', validateName);
+            recipientAccountInput.addEventListener('input', validateAccountNumber);
+            transferAmountInput.addEventListener('input', validateTransferAmount);
+            adminAmountInput.addEventListener('input', validateAdminAmount);
+            adminSenderInput.addEventListener('input', validateAdminSender);
+            
+            // Обновление доступного баланса при изменении суммы перевода
+            transferAmountInput.addEventListener('input', updateTransferButtonState);
+            
+            // Автосохранение при изменении полей ввода
+            userNameInput.addEventListener('input', autoSaveUserName);
+            recipientAccountInput.addEventListener('input', autoSaveTransferData);
+            transferAmountInput.addEventListener('input', autoSaveTransferData);
+            transferCommentInput.addEventListener('input', autoSaveTransferData);
+            adminAmountInput.addEventListener('input', autoSaveAdminData);
+            adminSenderInput.addEventListener('input', autoSaveAdminData);
+            adminCommentInput.addEventListener('input', autoSaveAdminData);
+        }
+        
+        // Валидация имени
+        function validateName() {
+            const name = userNameInput.value.trim();
+            const isValid = name.length > 0;
+            
+            if (!isValid) {
+                userNameInput.classList.add('error');
+                nameError.classList.add('show');
+            } else {
+                userNameInput.classList.remove('error');
+                nameError.classList.remove('show');
+            }
+            
+            return isValid;
+        }
+        
+        // Валидация номера счета (только цифры)
+        function validateAccountNumber() {
+            const account = recipientAccountInput.value.trim();
+            const isValid = /^\d+$/.test(account) && account.length >= 5;
+            
+            if (!isValid && account.length > 0) {
+                recipientAccountInput.classList.add('error');
+                accountError.classList.add('show');
+            } else {
+                recipientAccountInput.classList.remove('error');
+                accountError.classList.remove('show');
+            }
+            
+            updateTransferButtonState();
+            return isValid;
+        }
+        
+        // Валидация суммы перевода
+        function validateTransferAmount() {
+            const amount = parseInt(transferAmountInput.value);
+            const isValid = amount > 0;
+            
+            if (!isValid && transferAmountInput.value.length > 0) {
+                transferAmountInput.classList.add('error');
+                amountError.classList.add('show');
+            } else {
+                transferAmountInput.classList.remove('error');
+                amountError.classList.remove('show');
+            }
+            
+            // Проверка достаточности средств
+            if (amount > userData.balance) {
+                showInsufficientFundsError();
+            }
+            
+            updateTransferButtonState();
+            return isValid;
+        }
+        
+        // Валидация суммы в админ-панели
+        function validateAdminAmount() {
+            const amount = parseInt(adminAmountInput.value);
+            const isValid = amount > 0;
+            
+            if (!isValid && adminAmountInput.value.length > 0) {
+                adminAmountInput.classList.add('error');
+                adminAmountError.classList.add('show');
+            } else {
+                adminAmountInput.classList.remove('error');
+                adminAmountError.classList.remove('show');
+            }
+            
+            return isValid;
+        }
+        
+        // Валидация отправителя в админ-панели
+        function validateAdminSender() {
+            const sender = adminSenderInput.value.trim();
+            const isValid = sender.length > 0;
+            
+            if (!isValid && adminSenderInput.value.length > 0) {
+                adminSenderInput.classList.add('error');
+                adminSenderError.classList.add('show');
+            } else {
+                adminSenderInput.classList.remove('error');
+                adminSenderError.classList.remove('show');
+            }
+            
+            return isValid;
+        }
+        
+        // Показать ошибку недостатка средств
+        function showInsufficientFundsError() {
+            const amount = parseInt(transferAmountInput.value) || 0;
+            if (amount > userData.balance) {
+                showNotification('У вас недостаточно средств для этой транзакции!', 'warning');
+            }
+        }
+        
+        // Обновление состояния кнопки перевода
+        function updateTransferButtonState() {
+            const account = recipientAccountInput.value.trim();
+            const amount = parseInt(transferAmountInput.value);
+            const isAccountValid = /^\d+$/.test(account) && account.length >= 5;
+            const isAmountValid = amount > 0;
+            const hasSufficientFunds = amount <= userData.balance;
+            
+            sendTransferBtn.disabled = !(isAccountValid && isAmountValid && hasSufficientFunds);
+        }
+        
+        // Обновление доступного баланса
+        function updateAvailableBalance() {
+            availableBalance.textContent = `${formatCurrency(userData.balance)} ₽`;
+            availableBalance.className = userData.balance > 0 ? 'positive' : '';
+        }
+        
+        // Автосохранение имени пользователя
+        function autoSaveUserName() {
+            localStorage.setItem('sberbank_temp_name', userNameInput.value);
+        }
+        
+        // Автосохранение данных перевода
+        function autoSaveTransferData() {
+            const transferData = {
+                recipientAccount: recipientAccountInput.value,
+                amount: transferAmountInput.value,
+                comment: transferCommentInput.value
+            };
+            localStorage.setItem('sberbank_temp_transfer', JSON.stringify(transferData));
+        }
+        
+        // Автосохранение данных админ-панели
+        function autoSaveAdminData() {
+            const adminData = {
+                amount: adminAmountInput.value,
+                sender: adminSenderInput.value,
+                comment: adminCommentInput.value
+            };
+            localStorage.setItem('sberbank_temp_admin', JSON.stringify(adminData));
+        }
+        
+        // Загрузка временных данных
+        function loadTemporaryData() {
+            // Загрузка временного имени
+            const tempName = localStorage.getItem('sberbank_temp_name');
+            if (tempName) {
+                userNameInput.value = tempName;
+            }
+            
+            // Загрузка временных данных перевода
+            const tempTransfer = localStorage.getItem('sberbank_temp_transfer');
+            if (tempTransfer) {
+                try {
+                    const transferData = JSON.parse(tempTransfer);
+                    recipientAccountInput.value = transferData.recipientAccount || '';
+                    transferAmountInput.value = transferData.amount || '';
+                    transferCommentInput.value = transferData.comment || '';
                     
-                    // Случайная позиция
-                    const posX = Math.random() * 100;
-                    const posY = Math.random() * 100;
-                    spark.style.left = `${posX}%`;
-                    spark.style.top = `${posY}%`;
-                    
-                    // Случайная задержка анимации
-                    const delay = Math.random() * 5;
-                    spark.style.animationDelay = `${delay}s`;
-                    
-                    // Случайная длительность анимации
-                    const duration = 2 + Math.random() * 3;
-                    spark.style.animation = `sparkAnimation ${duration}s infinite`;
-                    
-                    sparksContainer.appendChild(spark);
+                    // Валидация загруженных данных
+                    validateAccountNumber();
+                    validateTransferAmount();
+                } catch (e) {
+                    console.log('Ошибка загрузки временных данных перевода');
                 }
             }
             
-            // Анимация искр
-            const styleSheet = document.createElement("style");
-            styleSheet.textContent = `
-                @keyframes sparkAnimation {
-                    0% {
-                        opacity: 0;
-                        transform: translate(0, 0) scale(0.5);
-                    }
-                    10% {
-                        opacity: 1;
-                        transform: translate(${Math.random() * 20 - 10}px, ${Math.random() * 20 - 10}px) scale(1);
-                    }
-                    20% {
-                        opacity: 0.8;
-                        transform: translate(${Math.random() * 30 - 15}px, ${Math.random() * 30 - 15}px) scale(1.2);
-                    }
-                    30% {
-                        opacity: 0.6;
-                        transform: translate(${Math.random() * 40 - 20}px, ${Math.random() * 40 - 20}px) scale(1);
-                    }
-                    40% {
-                        opacity: 0.4;
-                        transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px) scale(0.8);
-                    }
-                    50% {
-                        opacity: 0.2;
-                        transform: translate(${Math.random() * 60 - 30}px, ${Math.random() * 60 - 30}px) scale(0.6);
-                    }
-                    100% {
-                        opacity: 0;
-                        transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) scale(0);
-                    }
+            // Загрузка временных данных админ-панели
+            const tempAdmin = localStorage.getItem('sberbank_temp_admin');
+            if (tempAdmin) {
+                try {
+                    const adminData = JSON.parse(tempAdmin);
+                    adminAmountInput.value = adminData.amount || '1000';
+                    adminSenderInput.value = adminData.sender || 'СберБанк';
+                    adminCommentInput.value = adminData.comment || 'Пополнение счёта';
+                } catch (e) {
+                    console.log('Ошибка загрузки временных данных админ-панели');
                 }
-            `;
-            document.head.appendChild(styleSheet);
+            }
+        }
+        
+        // Обновление времени
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                              now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('current-time').textContent = timeString;
+        }
+        
+        // Загрузка данных пользователя из localStorage
+        function loadUserData() {
+            const savedData = localStorage.getItem('sberbankUserData');
             
-            // Инициализация искр
-            createSparks();
-            
-            // Получаем все кнопки вызова
-            const summonButtons = document.querySelectorAll('.summon-btn');
-            
-            // Для каждой кнопки добавляем обработчик события
-            summonButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const spiritName = this.getAttribute('data-name');
-                    currentSpiritName = spiritName;
+            if (savedData) {
+                try {
+                    userData = JSON.parse(savedData);
                     
-                    // Устанавливаем имя духа в модальном окне
-                    spiritModalName.textContent = spiritName.toUpperCase();
-                    
-                    // Показываем модальное окно
-                    summonModal.style.display = 'flex';
-                    mainContainer.style.filter = 'blur(3px)';
-                    
-                    // Сбрасываем шаги
-                    step1.style.display = 'block';
-                    step2.style.display = 'none';
-                    step3.style.display = 'none';
-                    
-                    // Очищаем поля формы
-                    document.getElementById('country').value = '';
-                    document.getElementById('city').value = '';
-                    
-                    // Вибрация на мобильных устройствах
-                    if (navigator.vibrate) {
-                        navigator.vibrate([100, 50, 100]);
+                    // Проверка структуры данных
+                    if (!userData.transactions) {
+                        userData.transactions = [];
                     }
-                });
-            });
+                    
+                    if (!userData.accountCreated && userData.transactions.length > 0) {
+                        userData.accountCreated = userData.transactions[0].date;
+                    }
+                    
+                    // Восстановление данных в интерфейсе
+                    displayName.textContent = userData.name;
+                    userAvatar.textContent = userData.name ? userData.name.charAt(0) : 'И';
+                    accountNumber.textContent = `Счёт: ${formatAccountNumber(userData.account)}`;
+                    balanceElement.textContent = `${formatCurrency(userData.balance)} ₽`;
+                    
+                    // Установка даты открытия счёта
+                    const accountCreationDate = userData.accountCreated ? 
+                        new Date(userData.accountCreated) : new Date();
+                    accountDate.textContent = formatDate(accountCreationDate);
+                    
+                    // Обновление истории
+                    updateHistoryList();
+                    
+                    // Загрузка временных данных
+                    loadTemporaryData();
+                    
+                    // Показываем главный экран, так как пользователь уже зарегистрирован
+                    showScreen(mainScreen);
+                    
+                    console.log('Данные пользователя загружены:', userData);
+                    return;
+                } catch (e) {
+                    console.error('Ошибка загрузки данных:', e);
+                    // Если данные повреждены, показываем экран регистрации
+                    showScreen(registerScreen);
+                }
+            } else {
+                // Нет сохраненных данных - показываем экран регистрации
+                showScreen(registerScreen);
+            }
             
-            // Закрытие модального окна
-            closeModal.addEventListener('click', function() {
-                summonModal.style.display = 'none';
-                mainContainer.style.filter = 'none';
-            });
-            
-            // Начать призыв
-            startSummonBtn.addEventListener('click', function() {
-                const country = document.getElementById('country').value.trim();
-                const city = document.getElementById('city').value.trim();
+            // Установка даты открытия счёта для нового пользователя
+            const now = new Date();
+            accountDate.textContent = formatDate(now);
+        }
+        
+        // Сохранение данных пользователя в localStorage
+        function saveUserData() {
+            try {
+                // Убедимся, что все обязательные поля заполнены
+                if (!userData.accountCreated && userData.transactions.length > 0) {
+                    userData.accountCreated = userData.transactions[0].date;
+                }
                 
-                if (!country || !city) {
-                    alert('Пожалуйста, заполните все поля!');
+                localStorage.setItem('sberbankUserData', JSON.stringify(userData));
+                console.log('Данные сохранены:', userData);
+            } catch (e) {
+                console.error('Ошибка сохранения данных:', e);
+                showNotification('Ошибка сохранения данных', 'error');
+            }
+        }
+        
+        // Регистрация пользователя
+        function registerUser() {
+            if (!validateName()) {
+                showNotification('Введите ваше имя', 'error');
+                userNameInput.focus();
+                return;
+            }
+            
+            const name = userNameInput.value.trim();
+            
+            // Очистка временного имени
+            localStorage.removeItem('sberbank_temp_name');
+            
+            userData.name = name;
+            userData.account = generateAccountNumber();
+            userData.balance = 0;
+            userData.accountCreated = new Date().toISOString();
+            userData.transactions = [
+                {
+                    id: Date.now(),
+                    type: 'account_opening',
+                    name: 'Открытие счёта',
+                    amount: 0,
+                    date: new Date().toISOString(),
+                    comment: 'Открытие счёта в СберБанке'
+                }
+            ];
+            
+            // Обновление интерфейса
+            displayName.textContent = name;
+            userAvatar.textContent = name.charAt(0);
+            accountNumber.textContent = `Счёт: ${formatAccountNumber(userData.account)}`;
+            balanceElement.textContent = `${formatCurrency(userData.balance)} ₽`;
+            accountDate.textContent = formatDate(new Date(userData.accountCreated));
+            updateAvailableBalance();
+            
+            // Сохранение и переход на главный экран
+            saveUserData();
+            showScreen(mainScreen);
+            showNotification('Счёт успешно создан!');
+            
+            // Обновление истории
+            updateHistoryList();
+        }
+        
+        // Показать экран перевода
+        function showTransferScreen() {
+            // Обновление активного меню
+            menuMain.classList.remove('active');
+            menuTransfer.classList.add('active');
+            
+            // Обновляем доступный баланс
+            updateAvailableBalance();
+            
+            showScreen(transferScreen);
+            
+            // Фокус на поле ввода номера счета
+            setTimeout(() => {
+                recipientAccountInput.focus();
+            }, 300);
+        }
+        
+        // Выполнить перевод
+        function makeTransfer() {
+            // Проверка валидности данных
+            if (!validateAccountNumber()) {
+                showNotification('Введите корректный номер счёта (только цифры)', 'error');
+                recipientAccountInput.focus();
+                return;
+            }
+            
+            if (!validateTransferAmount()) {
+                showNotification('Введите сумму перевода', 'error');
+                transferAmountInput.focus();
+                return;
+            }
+            
+            const recipientAccount = recipientAccountInput.value.trim();
+            const amount = parseInt(transferAmountInput.value);
+            const comment = transferCommentInput.value.trim();
+            
+            // Проверка достаточности средств
+            if (amount > userData.balance) {
+                showNotification('У вас недостаточно средств для этой транзакции!', 'warning');
+                transferAmountInput.focus();
+                return;
+            }
+            
+            // Выполнение перевода
+            userData.balance -= amount;
+            
+            // Добавление транзакции в историю
+            const transaction = {
+                id: Date.now(),
+                type: 'transfer_out',
+                name: `Перевод на счёт ${recipientAccount.substring(0, 8)}...`,
+                amount: -amount, // Отрицательное значение для перевода
+                date: new Date().toISOString(),
+                comment: comment || 'Перевод средств'
+            };
+            
+            userData.transactions.unshift(transaction);
+            
+            // Обновление интерфейса
+            balanceElement.textContent = `${formatCurrency(userData.balance)} ₽`;
+            updateAvailableBalance();
+            updateHistoryList();
+            
+            // Очистка временных данных перевода
+            localStorage.removeItem('sberbank_temp_transfer');
+            
+            // Очистка полей формы
+            recipientAccountInput.value = '';
+            transferAmountInput.value = '';
+            transferCommentInput.value = '';
+            
+            // Сброс валидации
+            recipientAccountInput.classList.remove('error');
+            transferAmountInput.classList.remove('error');
+            accountError.classList.remove('show');
+            amountError.classList.remove('show');
+            
+            // Показ уведомления и возврат на главный экран
+            showNotification(`Перевод на сумму ${amount} ₽ выполнен успешно!`);
+            showScreen(mainScreen);
+            menuMain.classList.add('active');
+            menuTransfer.classList.remove('active');
+            
+            // Сохранение данных
+            saveUserData();
+            
+            // Анимация баланса
+            balanceContainer.classList.add('pulse');
+            setTimeout(() => {
+                balanceContainer.classList.remove('pulse');
+            }, 1500);
+        }
+        
+        // Обработчик тройного клика по балансу
+        function handleBalanceClick() {
+            const currentTime = Date.now();
+            
+            // Сброс счетчика, если прошло более 1 секунды
+            if (currentTime - lastClickTime > 1000) {
+                clickCount = 0;
+            }
+            
+            clickCount++;
+            lastClickTime = currentTime;
+            
+            // Если было 3 клика за 1 секунду
+            if (clickCount === 3) {
+                clickCount = 0;
+                showAdminPanel();
+            }
+        }
+        
+        // Показать админ-панель
+        function showAdminPanel() {
+            adminPanel.classList.add('active');
+        }
+        
+        // Закрыть админ-панель
+        function closeAdminPanel() {
+            adminPanel.classList.remove('active');
+        }
+        
+        // Пополнить баланс через админ-панель
+        function addFunds() {
+            // Проверка валидности данных
+            if (!validateAdminAmount()) {
+                showNotification('Введите сумму пополнения', 'error');
+                adminAmountInput.focus();
+                return;
+            }
+            
+            if (!validateAdminSender()) {
+                showNotification('Введите отправителя', 'error');
+                adminSenderInput.focus();
+                return;
+            }
+            
+            const amount = parseInt(adminAmountInput.value);
+            const sender = adminSenderInput.value.trim();
+            const comment = adminCommentInput.value.trim();
+            
+            // Пополнение баланса
+            userData.balance += amount;
+            
+            // Добавление транзакции в историю
+            const transaction = {
+                id: Date.now(),
+                type: 'deposit',
+                name: `Пополнение от ${sender}`,
+                amount: amount, // Положительное значение для пополнения
+                date: new Date().toISOString(),
+                comment: comment || 'Пополнение счёта'
+            };
+            
+            userData.transactions.unshift(transaction);
+            
+            // Обновление интерфейса
+            balanceElement.textContent = `${formatCurrency(userData.balance)} ₽`;
+            updateAvailableBalance();
+            updateHistoryList();
+            
+            // Очистка временных данных админ-панели
+            localStorage.removeItem('sberbank_temp_admin');
+            
+            // Сброс валидации
+            adminAmountInput.classList.remove('error');
+            adminSenderInput.classList.remove('error');
+            adminAmountError.classList.remove('show');
+            adminSenderError.classList.remove('show');
+            
+            // Сброс значений полей админ-панели
+            adminAmountInput.value = '1000';
+            adminSenderInput.value = 'СберБанк';
+            adminCommentInput.value = 'Пополнение счёта';
+            
+            // Закрытие админ-панели и показ уведомления
+            closeAdminPanel();
+            showNotification(`Баланс пополнен на ${amount} ₽`);
+            
+            // Сохранение данных
+            saveUserData();
+            
+            // Анимация баланса
+            balanceContainer.classList.add('pulse');
+            setTimeout(() => {
+                balanceContainer.classList.remove('pulse');
+            }, 1500);
+        }
+        
+        // Обновление списка истории операций
+        function updateHistoryList() {
+            // Очистка списка (кроме элемента открытия счёта)
+            const existingItems = historyList.querySelectorAll('.history-item');
+            existingItems.forEach((item, index) => {
+                if (index > 0) item.remove();
+            });
+            
+            // Добавление транзакций
+            userData.transactions.forEach((transaction, index) => {
+                if (index === 0) {
+                    // Обновление первой транзакции (открытие счёта)
+                    const firstItem = historyList.querySelector('.history-item');
+                    if (firstItem) {
+                        const amountElement = firstItem.querySelector('.transaction-amount');
+                        const dateElement = firstItem.querySelector('.transaction-date');
+                        
+                        if (dateElement && transaction.date) {
+                            dateElement.textContent = formatDate(new Date(transaction.date));
+                        }
+                        
+                        if (amountElement) {
+                            amountElement.textContent = `${formatCurrency(transaction.amount)} ₽`;
+                            // Открытие счёта всегда отображается зеленым
+                            amountElement.className = 'transaction-amount positive';
+                        }
+                    }
                     return;
                 }
                 
-                // Переходим к шагу 2
-                step1.style.display = 'none';
-                step2.style.display = 'block';
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.style.animationDelay = `${index * 0.1}s`;
                 
-                // Запускаем анимацию загрузки
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += 1;
-                    loadingProgress.style.width = `${progress}%`;
-                    
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        
-                        // Ждем еще 1 секунду для эффекта
-                        setTimeout(() => {
-                            step2.style.display = 'none';
-                            step3.style.display = 'block';
-                            
-                            // Вибрация при успешном вызове
-                            if (navigator.vibrate) {
-                                navigator.vibrate([200, 100, 200]);
-                            }
-                        }, 1000);
-                    }
-                }, 100); // 10 секунд до 100%
+                // ФИКСИРУЕМ ЛОГИКУ ЦВЕТОВ:
+                // Если сумма ПОЛОЖИТЕЛЬНАЯ (пополнение) -> зеленый
+                // Если сумма ОТРИЦАТЕЛЬНАЯ (перевод) -> красный
+                const amount = transaction.amount;
+                const amountClass = amount >= 0 ? 'positive' : 'negative';
+                const amountSign = amount > 0 ? '+' : (amount < 0 ? '-' : '');
+                
+                const transactionDate = transaction.date ? new Date(transaction.date) : new Date();
+                
+                historyItem.innerHTML = `
+                    <div class="transaction-info">
+                        <div class="transaction-name">${transaction.name}</div>
+                        <div class="transaction-date">${formatDate(transactionDate)}</div>
+                        ${transaction.comment ? `<div class="transaction-comment">${transaction.comment}</div>` : ''}
+                    </div>
+                    <div class="transaction-amount ${amountClass}">${amountSign}${formatCurrency(Math.abs(amount))} ₽</div>
+                `;
+                
+                historyList.appendChild(historyItem);
             });
             
-            // Кнопка "В меню"
-            backToMenuBtn.addEventListener('click', function() {
-                summonModal.style.display = 'none';
-                mainContainer.style.filter = 'none';
+            // Обновление счетчика операций
+            const transactionCount = Math.max(0, userData.transactions.length - 1);
+            historyCount.textContent = `${transactionCount} ${getTransactionWord(transactionCount)}`;
+        }
+        
+        // Показать экран
+        function showScreen(screen) {
+            // Скрыть все экраны
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.remove('active');
             });
             
-            // Закрытие модального окна при клике вне его
-            summonModal.addEventListener('click', function(e) {
-                if (e.target === summonModal) {
-                    summonModal.style.display = 'none';
-                    mainContainer.style.filter = 'none';
-                }
-            });
+            // Показать нужный экран
+            screen.classList.add('active');
+        }
+        
+        // Показать уведомление
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.className = 'notification';
             
-            // Добавляем случайные мерцания свечей
-            setInterval(() => {
-                const candles = document.querySelectorAll('.candle');
-                candles.forEach(candle => {
-                    if (Math.random() > 0.7) {
-                        candle.style.animation = 'none';
-                        setTimeout(() => {
-                            candle.style.animation = 'flicker 2s infinite alternate';
-                        }, 50);
-                    }
-                });
+            if (type === 'error') {
+                notification.classList.add('error');
+            } else if (type === 'warning') {
+                notification.classList.add('warning');
+            }
+            
+            notification.style.display = 'block';
+            
+            // Скрыть уведомление через 3 секунды
+            setTimeout(() => {
+                notification.style.display = 'none';
             }, 3000);
+        }
+        
+        // Вспомогательные функции
+        function generateAccountNumber() {
+            // Генерация 20-значного номера счёта
+            let account = '';
+            for (let i = 0; i < 20; i++) {
+                account += Math.floor(Math.random() * 10);
+            }
+            return account;
+        }
+        
+        function formatAccountNumber(account) {
+            // Форматирование номера счёта для отображения
+            if (!account) return 'Счёт: •••• 0000';
+            return `Счёт: •••• ${account.substring(16)}`;
+        }
+        
+        function formatCurrency(amount) {
+            // Форматирование суммы с разделителями тысяч
+            const numAmount = Math.abs(Number(amount) || 0);
+            return numAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        }
+        
+        function formatDate(date) {
+            // Форматирование даты
+            const d = new Date(date);
+            if (isNaN(d.getTime())) return '--.--.----';
+            
+            const day = d.getDate().toString().padStart(2, '0');
+            const month = (d.getMonth() + 1).toString().padStart(2, '0');
+            const year = d.getFullYear();
+            return `${day}.${month}.${year}`;
+        }
+        
+        function getTransactionWord(count) {
+            // Склонение слова "операция" в зависимости от количества
+            if (count % 10 === 1 && count % 100 !== 11) {
+                return 'операция';
+            } else if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) {
+                return 'операции';
+            } else {
+                return 'операций';
+            }
+        }
+        
+        // Инициализация приложения при загрузке
+        document.addEventListener('DOMContentLoaded', initApp);
+        
+        // Сохранение данных перед закрытием страницы
+        window.addEventListener('beforeunload', function() {
+            saveUserData();
         });
     </script>
 </body>
